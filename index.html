@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>Warner Bros. Movie World Guide</title>
     <style>
         :root {
@@ -12,52 +12,59 @@
             --text-light: #555;
             --bg-light: #f9f9f9;
             --card-shadow: 0 4px 15px rgba(0,0,0,0.08);
-            --schedule-bg: #fffbf0; /* Light Gold for Schedule */
+            --schedule-bg: #fffbf0;
+        }
+
+        /* --- Global Reset & Base Styles --- */
+        * {
+            box-sizing: border-box; /* 確保 padding 不會撐破寬度 */
         }
 
         body {
-            font-family: "Helvetica Neue", Arial, "Microsoft JhengHei", sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Microsoft JhengHei", sans-serif;
             margin: 0;
             padding: 0;
             color: var(--text-dark);
             line-height: 1.6;
             background-color: #fff;
+            -webkit-font-smoothing: antialiased; /* 手機字體更清晰 */
         }
 
-        /* Header Style */
+        /* --- Header Style --- */
         header {
             background-color: var(--primary-color);
             color: white;
-            padding: 20px 0;
+            padding: 20px 15px;
             text-align: center;
             border-bottom: 5px solid var(--accent-color);
         }
 
         header h1 {
             margin: 0;
-            font-size: 2.2rem;
+            font-size: clamp(1.8rem, 5vw, 2.5rem); /* 智慧縮放字體：手機1.8rem ~ 桌機2.5rem */
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
+            line-height: 1.2;
         }
 
         header p {
-            margin: 5px 0 0;
-            font-size: 1.1rem;
+            margin: 8px 0 0;
+            font-size: clamp(0.9rem, 3vw, 1.1rem);
             opacity: 0.9;
         }
 
-        /* Container */
+        /* --- Container --- */
         .container {
             max-width: 1000px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 30px 20px;
         }
 
-        /* Section Styling */
+        /* --- Section Styling --- */
         section {
-            margin-bottom: 60px;
+            margin-bottom: 50px;
             border-bottom: 1px solid #eee;
-            padding-bottom: 40px;
+            padding-bottom: 30px;
         }
 
         section:last-child {
@@ -66,25 +73,26 @@
 
         h2 {
             color: var(--primary-color);
-            font-size: 1.8rem;
+            font-size: clamp(1.5rem, 4vw, 1.8rem);
             border-left: 5px solid var(--accent-color);
             padding-left: 15px;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             display: flex;
             align-items: center;
+            flex-wrap: wrap; /* 標題太長自動換行 */
             gap: 10px;
         }
 
         h3 {
             color: #333;
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             margin-top: 30px;
             margin-bottom: 15px;
             border-bottom: 2px solid #eee;
             padding-bottom: 10px;
         }
 
-        /* Bilingual Text Styling */
+        /* --- Bilingual Text Styling --- */
         .bilingual-block {
             margin-bottom: 25px;
         }
@@ -92,17 +100,47 @@
         .en-text {
             font-size: 1.1rem;
             color: #444;
-            margin-bottom: 8px;
-            font-weight: 500;
+            margin-bottom: 6px;
+            font-weight: 600;
         }
 
         .zh-text {
             font-size: 1rem;
             color: #666;
-            line-height: 1.8;
+            line-height: 1.7;
+            text-align: justify; /* 手機閱讀時對齊更整齊 */
         }
 
-        /* Feature List / Stats */
+        /* --- Responsive Grid --- */
+        .zones-grid {
+            display: grid;
+            /* 自動適應：手機單欄(min 280px)，平板雙欄，桌機三欄 */
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .zone-card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid #eee;
+            transition: transform 0.2s;
+        }
+        
+        /* 觸控回饋效果 */
+        .zone-card:active {
+            transform: scale(0.98);
+        }
+
+        .zone-card strong {
+            color: var(--primary-color);
+            display: block;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        /* --- List Styling --- */
         ul.stats-list {
             list-style: none;
             padding: 0;
@@ -114,9 +152,9 @@
         }
 
         ul.stats-list li {
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             display: flex;
-            align-items: center;
+            align-items: flex-start; /* 手機上文字換行時，圓點保持在頂部 */
             gap: 10px;
         }
 
@@ -125,43 +163,28 @@
             color: var(--accent-color);
             font-weight: bold;
             font-size: 1.5rem;
+            line-height: 1rem;
         }
 
-        /* Grid for Zones */
-        .zones-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .zone-card {
-            background: #fff;
-            padding: 20px;
+        /* --- Responsive Table Wrapper --- */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto; /* 手機上表格過寬時可左右滑動 */
+            -webkit-overflow-scrolling: touch; /* 讓 iOS 滑動更順暢 */
+            margin-top: 20px;
             border-radius: 8px;
             box-shadow: var(--card-shadow);
-            border: 1px solid #eee;
         }
 
-        .zone-card strong {
-            color: var(--primary-color);
-            display: block;
-            font-size: 1.1rem;
-            margin-bottom: 5px;
-        }
-
-        /* Schedule Table Styling */
         .schedule-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
             background-color: #fff;
-            box-shadow: var(--card-shadow);
-            border-radius: 8px;
-            overflow: hidden;
+            min-width: 600px; /* 強制最小寬度，確保內容不擠成一團 */
         }
 
         .schedule-table th, .schedule-table td {
-            padding: 15px 20px;
+            padding: 15px;
             text-align: left;
             border-bottom: 1px solid #eee;
         }
@@ -171,19 +194,17 @@
             color: var(--primary-color);
             font-weight: bold;
             text-transform: uppercase;
-        }
-
-        .schedule-table tr:last-child td {
-            border-bottom: none;
+            white-space: nowrap; /* 標題不換行 */
         }
 
         .time-col {
             font-weight: bold;
             color: var(--primary-color);
-            width: 150px;
+            width: 120px;
+            white-space: nowrap;
         }
 
-        /* Note Box */
+        /* --- Note & Highlight Box --- */
         .note-box {
             background-color: #f0f4f8;
             padding: 15px;
@@ -194,19 +215,47 @@
             border-left: 4px solid #aaa;
         }
 
-        /* Footer */
+        .highlight-card {
+            background-color: #eef7ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 5px solid var(--primary-color);
+        }
+
+        .highlight-card h4 {
+            margin: 0 0 10px 0;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+
+        /* --- Footer --- */
         footer {
             background-color: #111;
             color: #888;
             text-align: center;
-            padding: 40px 20px;
-            font-size: 0.9rem;
+            padding: 30px 20px;
+            font-size: 0.85rem;
+            padding-bottom: env(safe-area-inset-bottom); /* 避開 iPhone 底部橫條 */
         }
 
-        @media (max-width: 768px) {
-            header h1 { font-size: 1.6rem; }
-            .container { padding: 20px; }
-            h2 { font-size: 1.5rem; }
+        /* --- Mobile Specific Adjustments --- */
+        @media (max-width: 600px) {
+            .container { padding: 20px 15px; }
+            
+            h2 { 
+                font-size: 1.4rem; 
+                padding-left: 10px;
+                border-left-width: 4px;
+            }
+
+            .en-text { font-size: 1.05rem; }
+            .zh-text { font-size: 0.95rem; }
+
+            ul.stats-list { padding: 15px; }
+            
+            /* 手機上表格字體稍微縮小 */
+            .schedule-table th, .schedule-table td { padding: 12px; font-size: 0.9rem; }
         }
     </style>
 </head>
@@ -243,9 +292,34 @@
                     電影世界常被評選為「澳洲最佳主題樂園」，因為它擁有身臨其境的電影場景、世界級的街道遊行以及獨家的 DC 漫畫授權。它提供了一種與眾不同的完整娛樂體驗。
                 </div>
             </div>
+
+            <!-- Highlights -->
+            <div class="highlight-card">
+                <h4>1. Meet the Stars (遇見巨星)</h4>
+                <div class="bilingual-block" style="margin-bottom:0;">
+                    <div class="en-text">
+                        Walk down Main Street and bump into Batman, Wonder Woman, Superman, or the Looney Tunes characters.
+                    </div>
+                    <div class="zh-text">
+                        走在主街上，隨時可能巧遇蝙蝠俠、神力女超人、超人或 Looney Tunes 卡通角色。
+                    </div>
+                </div>
+            </div>
+
+            <div class="highlight-card">
+                <h4>2. Hollywood Movie Sets (好萊塢電影場景)</h4>
+                <div class="bilingual-block" style="margin-bottom:0;">
+                    <div class="en-text">
+                        The park is designed like a real working movie studio. Explore Gotham City, the Wild West, and colorful cartoon worlds.
+                    </div>
+                    <div class="zh-text">
+                        樂園設計得就像一個真實運作中的電影製片廠。探索高譚市、大西部場景以及色彩繽紛的卡通世界。
+                    </div>
+                </div>
+            </div>
         </section>
 
-        <!-- Entertainment Schedule Section (New Added) -->
+        <!-- Entertainment Schedule Section (Responsive Table) -->
         <section>
             <h2>📅 Daily Entertainment Schedule | 每日表演時刻表</h2>
             <div class="bilingual-block">
@@ -257,77 +331,81 @@
                 </div>
             </div>
 
-            <table class="schedule-table">
-                <thead>
-                    <tr>
-                        <th>Time (時間)</th>
-                        <th>Show / Event (表演/活動)</th>
-                        <th>Location (地點)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="time-col">10:30 AM</td>
-                        <td>
-                            <strong>Looney Tunes Dance Party</strong><br>
-                            <span style="font-size:0.9em; color:#666;">Looney Tunes 狂歡派對</span>
-                        </td>
-                        <td>Main Street (主街)</td>
-                    </tr>
-                    <tr>
-                        <td class="time-col">11:00 AM</td>
-                        <td>
-                            <strong>Hollywood Stunt Driver 2</strong><br>
-                            <span style="font-size:0.9em; color:#666;">好萊塢特技車手秀 (早場)</span>
-                        </td>
-                        <td>Hollywood Arena</td>
-                    </tr>
-                    <tr>
-                        <td class="time-col">11:50 AM</td>
-                        <td>
-                            <strong>Batman Appearance</strong><br>
-                            <span style="font-size:0.9em; color:#666;">蝙蝠俠出場 & 蝙蝠車展示</span>
-                        </td>
-                        <td>Gotham City Hall</td>
-                    </tr>
-                    <tr>
-                        <td class="time-col">12:30 PM</td>
-                        <td>
-                            <strong>Wonder Woman Meet & Greet</strong><br>
-                            <span style="font-size:0.9em; color:#666;">神力女超人見面會</span>
-                        </td>
-                        <td>Main Street (主街)</td>
-                    </tr>
-                    <tr>
-                        <td class="time-col">1:50 PM</td>
-                        <td>
-                            <strong>Hollywood Stunt Driver 2</strong><br>
-                            <span style="font-size:0.9em; color:#666;">好萊塢特技車手秀 (午場)</span>
-                        </td>
-                        <td>Hollywood Arena</td>
-                    </tr>
-                    <tr>
-                        <td class="time-col">3:30 PM</td>
-                        <td>
-                            <strong>Streets Star Parade</strong><br>
-                            <span style="font-size:0.9em; color:#666;">全明星街頭遊行 (必看!)</span>
-                        </td>
-                        <td>Main Street (主街)</td>
-                    </tr>
-                    <tr>
-                        <td class="time-col">All Day (整日)</td>
-                        <td>
-                            <strong>4D Cinema Experience</strong><br>
-                            <span style="font-size:0.9em; color:#666;">4D 電影體驗 (每20分鐘一場)</span>
-                        </td>
-                        <td>Roxy Theatre</td>
-                    </tr>
-                </tbody>
-            </table>
+            <!-- Responsive Wrapper -->
+            <div class="table-responsive">
+                <table class="schedule-table">
+                    <thead>
+                        <tr>
+                            <th>Time (時間)</th>
+                            <th>Show / Event (表演/活動)</th>
+                            <th>Location (地點)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="time-col">10:30 AM</td>
+                            <td><strong>Looney Tunes Dance Party</strong><br><span style="color:#666; font-size:0.9em;">Looney Tunes 狂歡派對</span></td>
+                            <td>Main Street</td>
+                        </tr>
+                        <tr>
+                            <td class="time-col">11:00 AM</td>
+                            <td><strong>Hollywood Stunt Driver 2</strong><br><span style="color:#666; font-size:0.9em;">好萊塢特技車手秀 (早場)</span></td>
+                            <td>Hollywood Arena</td>
+                        </tr>
+                        <tr>
+                            <td class="time-col">11:50 AM</td>
+                            <td><strong>Batman Appearance</strong><br><span style="color:#666; font-size:0.9em;">蝙蝠俠出場 & 蝙蝠車</span></td>
+                            <td>Gotham City Hall</td>
+                        </tr>
+                        <tr>
+                            <td class="time-col">12:30 PM</td>
+                            <td><strong>Wonder Woman Meet & Greet</strong><br><span style="color:#666; font-size:0.9em;">神力女超人見面會</span></td>
+                            <td>Main Street</td>
+                        </tr>
+                        <tr>
+                            <td class="time-col">1:50 PM</td>
+                            <td><strong>Hollywood Stunt Driver 2</strong><br><span style="color:#666; font-size:0.9em;">好萊塢特技車手秀 (午場)</span></td>
+                            <td>Hollywood Arena</td>
+                        </tr>
+                        <tr>
+                            <td class="time-col">3:30 PM</td>
+                            <td><strong>Streets Star Parade</strong><br><span style="color:#666; font-size:0.9em;">全明星街頭遊行 (必看!)</span></td>
+                            <td>Main Street</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
             <div class="note-box">
-                <strong>Note:</strong> Show times are subject to change due to weather or maintenance. Please check the LED screens on Main Street or the official app upon arrival.<br>
-                <strong>注意：</strong> 表演時間可能因天氣或維修而變動，請在抵達後查看主街上的 LED 螢幕或官方 App 確認當日時間。
+                <strong>Note:</strong> Show times are subject to change due to weather.<br>
+                <strong>注意：</strong> 表演時間可能因天氣因素而變動。
+            </div>
+        </section>
+
+        <!-- Zones Section -->
+        <section>
+            <h2>🗺️ Six Immersive Precincts | 六大沈浸式園區</h2>
+            <div class="zones-grid">
+                <div class="zone-card">
+                    <strong>Main Street (主街區)</strong>
+                    <p>Classic Hollywood atmosphere with street parades.<br>經典好萊塢氛圍，擁有街道遊行。</p>
+                </div>
+                <div class="zone-card">
+                    <strong>DC Comics Super Heroes (DC 英雄區)</strong>
+                    <p>Metropolis & Gotham City themed rides.<br>以大都會與高譚市為主題的遊樂設施區。</p>
+                </div>
+                <div class="zone-card">
+                    <strong>Wild West (大西部區)</strong>
+                    <p>Adventure in the old American West.<br>充滿冒險與動作場面的美國舊西部風格。</p>
+                </div>
+                <div class="zone-card">
+                    <strong>Kids' WB! Fun Zone (兒童樂園)</strong>
+                    <p>Looney Tunes themed rides for little ones.<br>以 Looney Tunes 卡通角色為主題的幼童遊樂區。</p>
+                </div>
+                <div class="zone-card" style="border: 2px solid var(--accent-color);">
+                    <strong>Wizard of Oz (綠野仙蹤區) <span style="color:red; font-size:0.8em;">NEW!</span></strong>
+                    <p>Opened Dec 2025! Journey to the Emerald City.<br>2025年12月全新開幕！踏上前往翡翠城的旅程。</p>
+                </div>
             </div>
         </section>
 
@@ -339,10 +417,10 @@
             <h3>DC Rivals HyperCoaster (DC Rivals 超級雲霄飛車)</h3>
             <div class="bilingual-block">
                 <div class="en-text">
-                    The tallest, longest, and fastest HyperCoaster in the Southern Hemisphere. Riders experience a menacing 89-degree drop and reach top speeds while navigating a twisted track layout.
+                    The tallest, longest, and fastest HyperCoaster in the Southern Hemisphere. Riders experience a menacing 89-degree drop and reach top speeds.
                 </div>
                 <div class="zh-text">
-                    南半球最高、最長、最快的超級雲霄飛車。乘客將體驗驚人的 89 度垂直俯衝，並在蜿蜒的軌道上達到極致速度。
+                    南半球最高、最長、最快的超級雲霄飛車。乘客將體驗驚人的 89 度垂直俯衝，並達到極致速度。
                 </div>
             </div>
             <ul class="stats-list">
@@ -355,27 +433,16 @@
             <h3>Superman Escape (超人逃逸)</h3>
             <div class="bilingual-block">
                 <div class="en-text">
-                    An Intamin Accelerator Coaster that launches you from 0 to 100km/h in just 2 seconds! Experience the sensation of flight as Superman pushes you to safety from a collapsing subway.
+                    An Intamin Accelerator Coaster that launches you from 0 to 100km/h in just 2 seconds!
                 </div>
                 <div class="zh-text">
-                    這是一座 Intamin 加速過山車，能在短短 2 秒內將你從 0 加速到 100 公里！體驗超人將你從崩塌的地鐵中推向安全的飛行快感。
+                    這是一座加速過山車，能在短短 2 秒內將你從 0 加速到 100 公里！
                 </div>
             </div>
             <ul class="stats-list">
                 <li><strong>Acceleration (加速):</strong> 0-100 km/h in 2 seconds</li>
                 <li><strong>G-Force (重力加速度):</strong> 3.2G</li>
             </ul>
-
-            <!-- Ride 3 -->
-            <h3>Wild West Falls (大西部激流)</h3>
-            <div class="bilingual-block">
-                <div class="en-text">
-                    A classic log flume ride that takes you through a ghost town, geysers, and ends with a massive 20-meter splashdown drop.
-                </div>
-                <div class="zh-text">
-                    經典的激流獨木舟冒險，帶你穿過鬼鎮、間歇泉，最後以 20 公尺高的巨大水花俯衝作為結尾。
-                </div>
-            </div>
         </section>
 
         <!-- Dining & Practical -->
@@ -392,7 +459,6 @@
             <ul class="stats-list">
                 <li><strong>Opening Hours:</strong> 9:30 AM - 5:00 PM</li>
                 <li><strong>Location:</strong> Pacific Mwy, Oxenford QLD 4210</li>
-                <li><strong>Lockers:</strong> Available near entrance (入口處設有置物櫃)</li>
             </ul>
         </section>
 
