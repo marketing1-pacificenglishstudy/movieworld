@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warner Bros. Movie World Guide</title>
+    <style>
+        :root {
+            --primary-color: #052C77; /* MW Deep Blue */
+            --accent-color: #F2A900; /* MW Gold */
+            --text-dark: #222;
+            --text-light: #555;
+            --bg-light: #f9f9f9;
+            --card-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            --schedule-bg: #fffbf0; /* Light Gold for Schedule */
+        }
+
+        body {
+            font-family: "Helvetica Neue", Arial, "Microsoft JhengHei", sans-serif;
+            margin: 0;
+            padding: 0;
+            color: var(--text-dark);
+            line-height: 1.6;
+            background-color: #fff;
+        }
+
+        /* Header Style */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            border-bottom: 5px solid var(--accent-color);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        header p {
+            margin: 5px 0 0;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Section Styling */
+        section {
+            margin-bottom: 60px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 40px;
+        }
+
+        section:last-child {
+            border-bottom: none;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            border-left: 5px solid var(--accent-color);
+            padding-left: 15px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h3 {
+            color: #333;
+            font-size: 1.4rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        /* Bilingual Text Styling */
+        .bilingual-block {
+            margin-bottom: 25px;
+        }
+
+        .en-text {
+            font-size: 1.1rem;
+            color: #444;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .zh-text {
+            font-size: 1rem;
+            color: #666;
+            line-height: 1.8;
+        }
+
+        /* Feature List / Stats */
+        ul.stats-list {
+            list-style: none;
+            padding: 0;
+            margin: 15px 0;
+            background-color: var(--bg-light);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        ul.stats-list li {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        ul.stats-list li::before {
+            content: "•";
+            color: var(--accent-color);
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        /* Grid for Zones */
+        .zones-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .zone-card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid #eee;
+        }
+
+        .zone-card strong {
+            color: var(--primary-color);
+            display: block;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        /* Schedule Table Styling */
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #fff;
+            box-shadow: var(--card-shadow);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .schedule-table th, .schedule-table td {
+            padding: 15px 20px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .schedule-table th {
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .schedule-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .time-col {
+            font-weight: bold;
+            color: var(--primary-color);
+            width: 150px;
+        }
+
+        /* Note Box */
+        .note-box {
+            background-color: #f0f4f8;
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: #555;
+            margin-top: 15px;
+            border-left: 4px solid #aaa;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #111;
+            color: #888;
+            text-align: center;
+            padding: 40px 20px;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            header h1 { font-size: 1.6rem; }
+            .container { padding: 20px; }
+            h2 { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Warner Bros. Movie World</h1>
+        <p>Hollywood on the Gold Coast | 黃金海岸的好萊塢</p>
+    </header>
+
+    <div class="container">
+
+        <!-- Intro Section -->
+        <section>
+            <h2>🎬 About Movie World | 關於電影世界</h2>
+            <div class="bilingual-block">
+                <div class="en-text">
+                    Warner Bros. Movie World is Australia's #1 theme park, bringing the magic of Hollywood to the Gold Coast. It is the only place where you can meet your favorite Super Heroes and Super-Villains.
+                </div>
+                <div class="zh-text">
+                    華納兄弟電影世界是澳洲排名第一的主題樂園，將好萊塢的魔法帶到了黃金海岸。這是您能與喜愛的超級英雄及反派角色相遇的唯一地點。
+                </div>
+            </div>
+        </section>
+
+        <!-- Why Visit Section -->
+        <section>
+            <h2>🌟 Gold Coast Must-Visit Theme Parks | 黃金海岸必玩主題樂園</h2>
+            <div class="bilingual-block">
+                <div class="en-text">
+                    Movie World is often voted as the "Best Theme Park in Australia" because of its immersive movie sets, world-class parades, and exclusive DC Comics partnership. It offers a complete entertainment experience unlike any other park.
+                </div>
+                <div class="zh-text">
+                    電影世界常被評選為「澳洲最佳主題樂園」，因為它擁有身臨其境的電影場景、世界級的街道遊行以及獨家的 DC 漫畫授權。它提供了一種與眾不同的完整娛樂體驗。
+                </div>
+            </div>
+        </section>
+
+        <!-- Entertainment Schedule Section (New Added) -->
+        <section>
+            <h2>📅 Daily Entertainment Schedule | 每日表演時刻表</h2>
+            <div class="bilingual-block">
+                <div class="en-text">
+                    Plan your day around these must-see shows. The "Streets Star Parade" is the highlight of the day!
+                </div>
+                <div class="zh-text">
+                    根據這些必看表演來規劃您的一天。「巨星遊行」是每日的重頭戲！
+                </div>
+            </div>
+
+            <table class="schedule-table">
+                <thead>
+                    <tr>
+                        <th>Time (時間)</th>
+                        <th>Show / Event (表演/活動)</th>
+                        <th>Location (地點)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="time-col">10:30 AM</td>
+                        <td>
+                            <strong>Looney Tunes Dance Party</strong><br>
+                            <span style="font-size:0.9em; color:#666;">Looney Tunes 狂歡派對</span>
+                        </td>
+                        <td>Main Street (主街)</td>
+                    </tr>
+                    <tr>
+                        <td class="time-col">11:00 AM</td>
+                        <td>
+                            <strong>Hollywood Stunt Driver 2</strong><br>
+                            <span style="font-size:0.9em; color:#666;">好萊塢特技車手秀 (早場)</span>
+                        </td>
+                        <td>Hollywood Arena</td>
+                    </tr>
+                    <tr>
+                        <td class="time-col">11:50 AM</td>
+                        <td>
+                            <strong>Batman Appearance</strong><br>
+                            <span style="font-size:0.9em; color:#666;">蝙蝠俠出場 & 蝙蝠車展示</span>
+                        </td>
+                        <td>Gotham City Hall</td>
+                    </tr>
+                    <tr>
+                        <td class="time-col">12:30 PM</td>
+                        <td>
+                            <strong>Wonder Woman Meet & Greet</strong><br>
+                            <span style="font-size:0.9em; color:#666;">神力女超人見面會</span>
+                        </td>
+                        <td>Main Street (主街)</td>
+                    </tr>
+                    <tr>
+                        <td class="time-col">1:50 PM</td>
+                        <td>
+                            <strong>Hollywood Stunt Driver 2</strong><br>
+                            <span style="font-size:0.9em; color:#666;">好萊塢特技車手秀 (午場)</span>
+                        </td>
+                        <td>Hollywood Arena</td>
+                    </tr>
+                    <tr>
+                        <td class="time-col">3:30 PM</td>
+                        <td>
+                            <strong>Streets Star Parade</strong><br>
+                            <span style="font-size:0.9em; color:#666;">全明星街頭遊行 (必看!)</span>
+                        </td>
+                        <td>Main Street (主街)</td>
+                    </tr>
+                    <tr>
+                        <td class="time-col">All Day (整日)</td>
+                        <td>
+                            <strong>4D Cinema Experience</strong><br>
+                            <span style="font-size:0.9em; color:#666;">4D 電影體驗 (每20分鐘一場)</span>
+                        </td>
+                        <td>Roxy Theatre</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="note-box">
+                <strong>Note:</strong> Show times are subject to change due to weather or maintenance. Please check the LED screens on Main Street or the official app upon arrival.<br>
+                <strong>注意：</strong> 表演時間可能因天氣或維修而變動，請在抵達後查看主街上的 LED 螢幕或官方 App 確認當日時間。
+            </div>
+        </section>
+
+        <!-- Rides Section -->
+        <section>
+            <h2>🎢 Must-Try Thrill Rides | 必玩刺激設施</h2>
+
+            <!-- Ride 1 -->
+            <h3>DC Rivals HyperCoaster (DC Rivals 超級雲霄飛車)</h3>
+            <div class="bilingual-block">
+                <div class="en-text">
+                    The tallest, longest, and fastest HyperCoaster in the Southern Hemisphere. Riders experience a menacing 89-degree drop and reach top speeds while navigating a twisted track layout.
+                </div>
+                <div class="zh-text">
+                    南半球最高、最長、最快的超級雲霄飛車。乘客將體驗驚人的 89 度垂直俯衝，並在蜿蜒的軌道上達到極致速度。
+                </div>
+            </div>
+            <ul class="stats-list">
+                <li><strong>Height (高度):</strong> 61.6 meters (61.6 公尺)</li>
+                <li><strong>Top Speed (最高時速):</strong> 115.1 km/h (115.1 公里)</li>
+                <li><strong>G-Force (重力加速度):</strong> 4.3G</li>
+            </ul>
+
+            <!-- Ride 2 -->
+            <h3>Superman Escape (超人逃逸)</h3>
+            <div class="bilingual-block">
+                <div class="en-text">
+                    An Intamin Accelerator Coaster that launches you from 0 to 100km/h in just 2 seconds! Experience the sensation of flight as Superman pushes you to safety from a collapsing subway.
+                </div>
+                <div class="zh-text">
+                    這是一座 Intamin 加速過山車，能在短短 2 秒內將你從 0 加速到 100 公里！體驗超人將你從崩塌的地鐵中推向安全的飛行快感。
+                </div>
+            </div>
+            <ul class="stats-list">
+                <li><strong>Acceleration (加速):</strong> 0-100 km/h in 2 seconds</li>
+                <li><strong>G-Force (重力加速度):</strong> 3.2G</li>
+            </ul>
+
+            <!-- Ride 3 -->
+            <h3>Wild West Falls (大西部激流)</h3>
+            <div class="bilingual-block">
+                <div class="en-text">
+                    A classic log flume ride that takes you through a ghost town, geysers, and ends with a massive 20-meter splashdown drop.
+                </div>
+                <div class="zh-text">
+                    經典的激流獨木舟冒險，帶你穿過鬼鎮、間歇泉，最後以 20 公尺高的巨大水花俯衝作為結尾。
+                </div>
+            </div>
+        </section>
+
+        <!-- Dining & Practical -->
+        <section>
+            <h2>🍔 Dining & Visitor Info | 餐飲與遊客資訊</h2>
+            
+            <h3>Dining Highlights (餐飲推薦)</h3>
+            <ul class="stats-list">
+                <li><strong>Dirty Harry Bar:</strong> Tacos and nachos in a Wild West setting (大西部風格的墨西哥玉米片與塔可)</li>
+                <li><strong>Gotham City Cafe:</strong> Burgers and fries in the heart of Batman's city (蝙蝠俠城市中心的漢堡與薯條)</li>
+            </ul>
+
+            <h3>Visitor Services (遊客服務)</h3>
+            <ul class="stats-list">
+                <li><strong>Opening Hours:</strong> 9:30 AM - 5:00 PM</li>
+                <li><strong>Location:</strong> Pacific Mwy, Oxenford QLD 4210</li>
+                <li><strong>Lockers:</strong> Available near entrance (入口處設有置物櫃)</li>
+            </ul>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>© 2026 Warner Bros. Movie World Guide. Designed for Visitors.</p>
+    </footer>
+
+</body>
+</html>
